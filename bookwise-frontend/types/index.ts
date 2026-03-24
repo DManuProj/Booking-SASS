@@ -100,13 +100,12 @@ export type StaffMember = {
 };
 
 export type OnboardingService = {
-  id: string;
+  // id: string;
   name: string;
   duration: number;
   price: number;
   buffer: number;
-  description: string;
-  staffIds: string[];
+  description?: string;
 };
 
 export type SlugStatus =
@@ -133,10 +132,10 @@ export type Step4Data = {
 };
 
 export type OnboardingData = {
-  step1: Step1Data | null;
-  step2: Step2Data | null;
-  step3: Step3Data | null;
-  step4: Step4Data | null;
+  businessInfo: Step1Data | null;
+  businessHours: Step2Data | null;
+  staffData: Step3Data | null;
+  services: Step4Data | null;
 };
 
 /* ── Zod schema ── */
@@ -156,3 +155,18 @@ export const businessFormSchema = z.object({
   currency: z.string().min(1, "Currency is required"),
 });
 export type BusinessFormInputs = z.infer<typeof businessFormSchema>;
+
+export const serviceSchema = z.object({
+  name: z.string().min(1, "Service name is required"),
+  duration: z.number().min(1, "Duration is required"),
+  price: z
+    .number({
+      required_error: "Price is required",
+      invalid_type_error: "Price must be a number",
+    })
+    .min(1, "Price is required"),
+  buffer: z.number().min(0),
+  description: z.string().optional(),
+});
+
+export type ServiceFormInputs = z.infer<typeof serviceSchema>;

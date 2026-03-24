@@ -1,4 +1,5 @@
 "use client";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
@@ -69,6 +70,8 @@ const OnboardingBusinessInfo = ({ initialData, onComplete }: Props) => {
   const slugDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [mounted, setMounted] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -129,16 +132,12 @@ const OnboardingBusinessInfo = ({ initialData, onComplete }: Props) => {
     };
   }, [slug]);
 
-  /* ── Country → timezone + currency ── */
-  // useEffect(() => {
-  //   const found = getCountryByCode(country);
-  //   if (found) {
-  //     setValue("timezone", found.timezone, { shouldValidate: true });
-  //     setValue("currency", `${found.currency} (${found.currencySymbol})`, {
-  //       shouldValidate: true,
-  //     });
-  //   }
-  // }, [country]);
+  //for radis error
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   /* ── Logo upload ── */
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -367,8 +366,8 @@ const OnboardingBusinessInfo = ({ initialData, onComplete }: Props) => {
         {/* ── Country ── */}
         <Field>
           <FieldLabel>Country *</FieldLabel>
-          <div className="flex items-center gap-2">
-            <Globe className="h-5 w-5 text-muted-foreground shrink-0" />
+          <div className="relative ">
+            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Select
               value={country}
               onValueChange={(val) => {
@@ -384,8 +383,11 @@ const OnboardingBusinessInfo = ({ initialData, onComplete }: Props) => {
                 }
               }}
             >
-              <SelectTrigger aria-invalid={!!errors.country}>
-                <SelectValue placeholder="Select your country" />
+              <SelectTrigger aria-invalid={!!errors.country} className="pl-9">
+                <SelectValue
+                  placeholder="Select your country"
+                  className="pl-10"
+                />
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((c) => (
@@ -415,7 +417,7 @@ const OnboardingBusinessInfo = ({ initialData, onComplete }: Props) => {
             <SelectContent>
               {CURRENCIES.map((c) => (
                 <SelectItem key={c.code} value={c.code}>
-                  {c.symbol} — {c.name} ({c.code})
+                  {c.symbol} - {c.name} ({c.code})
                 </SelectItem>
               ))}
             </SelectContent>
