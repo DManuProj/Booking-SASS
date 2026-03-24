@@ -51,11 +51,14 @@ const OnboardingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Minimal top bar — logo only */}
-      <header className="border-b border-border dark:bg-[#070e1d]/85 sticky top-0 z-40 backdrop-blur-md bg-background/80">
+      <header className="border-b border-border bg-[#070e1d]/85  sticky top-0 z-40 backdrop-blur-md ">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <button onClick={handleLogoClick} className="cursor-pointer">
             {mounted && (
-              <Logo variant={theme === "dark" ? "light" : "dark"} asLink={false} />
+              <Logo
+                variant={theme === "dark" ? "light" : "dark"}
+                asLink={false}
+              />
             )}
           </button>
           <div className="flex items-center gap-2">

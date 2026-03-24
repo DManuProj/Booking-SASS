@@ -2,43 +2,20 @@
 
 import OnboardingBusinessInfo from "@/components/onboarding/OnboardingBusinessInfo";
 import DoneScreen from "@/components/onboarding/DoneScreen";
-import Services from "@/components/onboarding/OnboardingService";
-import Staff from "@/components/onboarding/OnboardingStaff";
-import WorkingHours from "@/components/onboarding/OnboardingWorkingHours";
+import OnboardingServices from "@/components/onboarding/OnboardingService";
+import OnboardingStaff from "@/components/onboarding/OnboardingStaff";
+import OnboardingWorkingHours from "@/components/onboarding/OnboardingWorkingHours";
+import OnboardingReview from "@/components/onboarding/OnboardingReview";
 import { useState } from "react";
-import { Step1Data, Step2Data, Step3Data, Step4Data } from "@/types";
-
-export type WorkingHourRow = {
-  day: "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN";
-  isOpen: boolean;
-  openTime: string;
-  closeTime: string;
-};
-
-export type StaffMember = {
-  id: string;
-  name: string;
-  email: string;
-  role: "admin" | "member";
-  isOwner: boolean;
-};
-
-export type Service = {
-  id: string;
-  name: string;
-  duration: number;
-  price: number;
-  buffer: number;
-  description: string;
-  staffIds: string[];
-};
-
-export type OnboardingData = {
-  step1: Step1Data | null;
-  step2: Step2Data | null;
-  step3: Step3Data | null;
-  step4: Step4Data | null;
-};
+import type {
+  Step1Data,
+  Step2Data,
+  Step3Data,
+  Step4Data,
+  OnboardingData,
+  WorkingHourRow,
+} from "@/types";
+import { Check } from "lucide-react";
 
 /* ── Default working hours ── */
 const defaultWorkingHours: WorkingHourRow[] = [
@@ -57,51 +34,64 @@ const STEPS = [
   { number: 2, label: "Hours" },
   { number: 3, label: "Staff" },
   { number: 4, label: "Services" },
+  { number: 5, label: "Review" },
 ];
 
 /* ── Component ── */
 const OnboardingPage = () => {
-  const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4>(1);
+  const [currentStep, setCurrentStep] = useState<1 | 2 | 3 | 4 | 5>(1);
+  const [cameFromReview, setCameFromReview] = useState(false);
   const [isDone, setIsDone] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<OnboardingData>({
-    step1: null,
-    step2: { workingHours: defaultWorkingHours },
-    step3: { staff: [] },
-    step4: { services: [] },
+    businessInfo: null,
+    businessHours: { workingHours: defaultWorkingHours },
+    staffData: { staff: [] },
+    services: { services: [] },
   });
 
+  /* ── Handlers ── */
   const handleStep1Complete = (data: Step1Data) => {
-    setFormData((prev) => ({ ...prev, step1: data }));
-    setCurrentStep(2);
+    setFormData((prev) => ({ ...prev, businessInfo: data }));
+    if (cameFromReview) {
+      setCameFromReview(false);
+      setCurrentStep(5);
+    } else setCurrentStep(2);
   };
 
   const handleStep2Complete = (data: Step2Data) => {
-    setFormData((prev) => ({ ...prev, step2: data }));
-    setCurrentStep(3);
+    setFormData((prev) => ({ ...prev, workingHours: data }));
+    if (cameFromReview) {
+      setCameFromReview(false);
+      setCurrentStep(5);
+    } else setCurrentStep(3);
   };
 
   const handleStep3Complete = (data: Step3Data) => {
-    setFormData((prev) => ({ ...prev, step3: data }));
-    setCurrentStep(4);
+    setFormData((prev) => ({ ...prev, team: data }));
+    if (cameFromReview) {
+      setCameFromReview(false);
+      setCurrentStep(5);
+    } else setCurrentStep(4);
   };
 
-  const handleStep4Complete = async (data: Step4Data) => {
-    const finalData = { ...formData, step4: data };
-    setFormData(finalData);
-    setIsSubmitting(true);
+  const handleStep4Complete = (data: Step4Data) => {
+    setFormData((prev) => ({ ...prev, services: data }));
+    if (cameFromReview) {
+      setCameFromReview(false);
+      setCurrentStep(5);
+    } else setCurrentStep(5);
+  };
 
+  const handleConfirm = async () => {
+    setIsSubmitting(true);
     try {
-      // TODO: replace with real API call
-      // await fetch("/api/onboarding", {
-      //   method: "POST",
-      //   body: JSON.stringify(finalData),
-      // });
-      await new Promise((res) => setTimeout(res, 1500)); // simulate
+      // TODO: await fetch("/api/onboarding", { method: "POST", body: JSON.stringify(formData) })
+      await new Promise((res) => setTimeout(res, 1500));
       setIsDone(true);
     } catch (err) {
-      console.error("Onboarding submission failed", err);
+      console.error(err);
     } finally {
       setIsSubmitting(false);
     }
@@ -109,16 +99,17 @@ const OnboardingPage = () => {
 
   const handleBack = () => {
     if (currentStep > 1) {
-      setCurrentStep((prev) => (prev - 1) as 1 | 2 | 3 | 4);
+      setCurrentStep((prev) => (prev - 1) as 1 | 2 | 3 | 4 | 5);
     }
   };
 
+  /* ── Done screen ── */
   if (isDone) {
     return (
       <DoneScreen
-        slug={formData.step1?.slug ?? "your-business"}
-        businessName={formData.step1?.businessName ?? "Your Business"}
-        staffCount={formData.step3?.staff.length ?? 0}
+        slug={formData.businessInfo?.slug ?? "your-business"}
+        businessName={formData.businessInfo?.businessName ?? "Your Business"}
+        staffCount={formData.staffData?.staff.length ?? 0}
       />
     );
   }
@@ -128,12 +119,10 @@ const OnboardingPage = () => {
       {/* Progress bar */}
       <div className="border-b border-border bg-background/50">
         <div className="max-w-5xl mx-auto px-6 py-4">
-          {/* Step indicators */}
-          <div className="flex  justify-between max-w-xl mx-auto">
+          <div className="flex justify-between  max-w-max mx-auto">
             {STEPS.map((step, index) => {
               const isCompleted = currentStep > step.number;
               const isCurrent = currentStep === step.number;
-
               return (
                 <div key={step.number} className="flex items-center">
                   <div className="flex flex-col items-center gap-1">
@@ -146,7 +135,7 @@ const OnboardingPage = () => {
                             : "bg-muted border-2 border-border text-muted-foreground"
                       }`}
                     >
-                      {isCompleted ? "✓" : step.number}
+                      {isCompleted ? <Check /> : step.number}
                     </div>
                     <span
                       className={`text-xs font-medium transition-colors ${
@@ -160,11 +149,9 @@ const OnboardingPage = () => {
                       {step.label}
                     </span>
                   </div>
-
-                  {/* Connector line between steps */}
                   {index < STEPS.length - 1 && (
                     <div
-                      className={`w-28 h-px mx-2 mb-5  transition-colors duration-300 ${
+                      className={`w-28 h-px mx-2 mb-5 transition-colors duration-300 ${
                         isCompleted ? "bg-brand-500" : "bg-border"
                       }`}
                     />
@@ -181,30 +168,41 @@ const OnboardingPage = () => {
         <div className="w-full max-w-2xl">
           {currentStep === 1 && (
             <OnboardingBusinessInfo
-              initialData={formData.step1}
+              initialData={formData.businessInfo}
               onComplete={handleStep1Complete}
             />
           )}
           {currentStep === 2 && (
-            <WorkingHours
-              initialData={formData.step2}
+            <OnboardingWorkingHours
+              initialData={formData.businessHours}
               onComplete={handleStep2Complete}
               onBack={handleBack}
             />
           )}
           {currentStep === 3 && (
-            <Staff
-              initialData={formData.step3}
+            <OnboardingStaff
+              initialData={formData.staffData}
               onComplete={handleStep3Complete}
               onBack={handleBack}
             />
           )}
           {currentStep === 4 && (
-            <Services
-              initialData={formData.step4}
-              staff={formData.step3?.staff ?? []}
-              currency={formData.step1?.currency ?? "USD"}
+            <OnboardingServices
+              initialData={formData.services}
+              currency={formData.businessInfo?.currency ?? "USD"}
               onComplete={handleStep4Complete}
+              onBack={handleBack}
+              isSubmitting={isSubmitting}
+            />
+          )}
+          {currentStep === 5 && (
+            <OnboardingReview
+              formData={formData}
+              onEdit={(step) => {
+                setCameFromReview(true);
+                setCurrentStep(step);
+              }}
+              onConfirm={handleConfirm}
               onBack={handleBack}
               isSubmitting={isSubmitting}
             />

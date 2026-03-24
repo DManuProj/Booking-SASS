@@ -38,7 +38,7 @@ const Navbar = () => {
         fixed top-0 left-0 right-0 z-50
         transition-all duration-300
        
-             "bg-white/85 dark:bg-[#070e1d]/85 backdrop-blur-2xl shadow-sm shadow-black/5 border-b border-brand-500/15 dark:border-brand-500/20"
+             "bg-white/85 bg-[#070e1d]/85 backdrop-blur-2xl shadow-sm shadow-black/5 border-b border-brand-500/15 dark:border-brand-500/20"
            
         
       `}
@@ -54,7 +54,7 @@ const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-500/8 transition-all duration-150"
+                className="text-sm font-medium px-4 py-2 rounded-lg text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-500/8 transition-all duration-150"
               >
                 {link.label}
               </Link>
