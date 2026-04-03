@@ -99,10 +99,11 @@ const Pricing = () => {
           </Label>
           <button
             onClick={() => setIsYearly(!isYearly)}
-            className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${isYearly ? "bg-brand-500" : "bg-slate-300 dark:bg-slate-600"}`}
+            aria-label="Toggle billing period"
+            className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${isYearly ? "bg-brand-500" : "bg-muted-foreground/30"}`}
           >
             <span
-              className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isYearly ? "translate-x-1" : "-translate-x-5"}`}
+              className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isYearly ? "translate-x-6" : "translate-x-0"}`}
             />
           </button>
 

@@ -45,15 +45,10 @@ export interface User {
   onboardingComplete: boolean;
 }
 
-export interface Service {
+export type Service = ServiceFormInputs & {
   id: string;
-  orgId: string;
-  name: string;
-  description?: string;
-  durationMins: number;
-  price: number;
   isActive: boolean;
-}
+};
 
 export interface Booking {
   id: string;
@@ -97,15 +92,10 @@ export type StaffMember = {
   email: string;
   role: Role;
   isOwner: boolean;
-};
-
-export type OnboardingService = {
-  // id: string;
-  name: string;
-  duration: number;
-  price: number;
-  buffer: number;
-  description?: string;
+  status?: "active" | "inactive";
+  phone?: string;
+  photo?: string;
+  joinedAt?: string;
 };
 
 export type SlugStatus =
@@ -128,7 +118,7 @@ export type Step3Data = {
 };
 
 export type Step4Data = {
-  services: OnboardingService[];
+  services: ServiceFormInputs[];
 };
 
 export type OnboardingData = {
@@ -136,6 +126,30 @@ export type OnboardingData = {
   businessHours: Step2Data | null;
   staffData: Step3Data | null;
   services: Step4Data | null;
+};
+
+// ── Customer ────────────────────────────────────────
+
+export type BookingHistoryItem = {
+  id: string;
+  service: string;
+  date: string;
+  time: string;
+  staff: string;
+  status: BookingStatus;
+};
+
+export type CustomerRow = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalBookings: number;
+  lastVisit: string;
+  firstSeen: string;
+  notes: string;
+  isNew: boolean;
+  bookingHistory: BookingHistoryItem[];
 };
 
 /* ── Zod schema ── */
@@ -170,3 +184,45 @@ export const serviceSchema = z.object({
 });
 
 export type ServiceFormInputs = z.infer<typeof serviceSchema>;
+
+// ── Public Booking ──────────────────────────────────
+
+export type OrgService = {
+  id: string;
+  name: string;
+  duration: number;
+  price: number;
+  buffer: number;
+  description: string;
+};
+
+export type OrgStaff = {
+  id: string;
+  name: string;
+  role: string;
+  photo: string | null;
+};
+
+export type OrgData = {
+  name: string;
+  slug: string;
+  description: string;
+  phone: string;
+  logo: string | null;
+  address: string;
+  services: OrgService[];
+  staff: OrgStaff[];
+  currency: string;
+  voiceAiEnabled: boolean;
+};
+
+// ── Public Booking Form ─────────────────────────────
+
+export const bookingDetailsSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Enter a valid email address"),
+  phone: z.string().min(7, "Enter a valid phone number"),
+  note: z.string().optional(),
+});
+
+export type BookingFormData = z.infer<typeof bookingDetailsSchema>;

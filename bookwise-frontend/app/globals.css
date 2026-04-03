@@ -200,24 +200,43 @@
    UTILITIES
 ───────────────────────────────────────────── */
 @layer utilities {
+  /* Section backgrounds — alternate for visual rhythm */
   .bg-section {
     background: transparent;
   }
 
   .bg-section-alt {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(2px);
+    background: hsl(var(--secondary));
   }
 
+  /* Always-dark footer — consistent in both light and dark modes */
+  .bg-footer {
+    background-color: hsl(220 55% 6%);
+  }
+
+  /* Card surfaces */
   .card-surface {
     background-color: hsl(var(--card));
     border: 1px solid hsl(var(--border));
   }
 
+  .card-hover {
+    transition-property: border-color, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
+
+  .card-hover:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: 0 4px 24px -4px hsl(var(--primary) / 0.1);
+  }
+
+  /* Brand gradient text — works in all browsers */
   .text-gradient {
-    background: linear-gradient(135deg, #059669, #10b981);
+    background: linear-gradient(135deg, hsl(var(--primary)), var(--color-brand-400));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
 

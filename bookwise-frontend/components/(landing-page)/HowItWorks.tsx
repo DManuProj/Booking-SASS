@@ -29,7 +29,7 @@ const steps = [
     icon: Sparkles,
     title: "AI handles the rest",
     description:
-      "Customers call or book online. The AI receptionist manages everything and bookings appear in your dashboard.",
+      "Customers talk to your AI assistant online or book manually. The AI handles the conversation, creates the booking and sends confirmation — all automatically.",
     color: "text-amber-600 dark:text-amber-400",
     bg: "bg-amber-500/10",
     border: "border-amber-500/20",
