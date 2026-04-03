@@ -36,7 +36,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { serviceSchema, type Step4Data } from "@/types";
-import { v4 as uuidv4 } from "uuid";
 import { getCurrencyByCode } from "@/lib/countries";
 
 const onBoardingServiceSchema = z.object({

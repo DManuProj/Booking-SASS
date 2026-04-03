@@ -51,14 +51,14 @@ const Hero = () => {
 
           {/* Headline — always white, Hero is always dark */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 tracking-tight">
-            Your AI Receptionist,
+            Your AI Booking Assistant,
             <br />
             <span className="text-gradient">Working 24/7</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Bookwise answers calls, books appointments and manages your schedule
-            so you never miss a customer again.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Bookwise lets customers book appointments by talking to your AI
+            assistant online — so you never miss a booking, even at 2am.
           </p>
 
           {/* CTA Buttons */}
@@ -122,7 +122,7 @@ const Hero = () => {
           {/* Floating chat card */}
           <div className="relative max-w-sm mx-auto animate-float">
             <div className="absolute inset-0 bg-brand-500 opacity-20 blur-2xl rounded-3xl" />
-            <div className="relative bg-slate-900/10 dark:bg-slate-900/90 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl p-6 text-left shadow-2xl">
+            <div className="relative bg-slate-900 dark:bg-slate-900/90 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl p-6 text-left shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center">

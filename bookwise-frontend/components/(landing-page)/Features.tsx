@@ -1,5 +1,5 @@
 import Container from "@/components/shared/Container";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Mic, Calendar, Users, Bell, BarChart3, Globe } from "lucide-react";
 
 const features = [
@@ -7,7 +7,7 @@ const features = [
     icon: Mic,
     title: "Voice AI Receptionist",
     description:
-      "Customers speak naturally and the AI understands, checks availability and books instantly — no human needed.",
+      "Customers visit your booking page, click talk to AI, and speak naturally. The AI checks availability and books instantly — no human needed.",
     iconBg: "bg-violet-500/10",
     iconColor: "text-violet-600 dark:text-violet-400",
     hoverBorder: "hover:border-violet-200 dark:hover:border-violet-500/30",
@@ -43,7 +43,7 @@ const features = [
     icon: BarChart3,
     title: "Business Analytics",
     description:
-      "Track bookings, revenue trends, popular services and staff performance — all in one clean dashboard.",
+      "Track bookings, popular services, staff performance and customer return rates — all in one clean dashboard.",
     iconBg: "bg-rose-500/10",
     iconColor: "text-rose-600 dark:text-rose-400",
     hoverBorder: "hover:border-rose-200 dark:hover:border-rose-500/30",

@@ -1,7 +1,11 @@
+"use client";
+
 import Container from "@/components/shared/Container";
 import Logo from "@/components/shared/Logo";
 import Link from "next/link";
 import { Twitter, Linkedin, Instagram } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 const footerLinks = [
   {
@@ -39,12 +43,20 @@ const socialLinks = [
 ];
 
 const Footer = () => {
+  const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted && theme === "dark";
   return (
     <footer className="bg-footer">
       <Container>
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="lg:col-span-2">
-            <Logo variant="light" size="md" />
+            <Logo asLink href="/" variant={isDark ? "light" : "dark"} />
             <p className="mt-4 text-sm text-slate-400 leading-relaxed max-w-xs">
               AI-powered booking for service businesses. Let your receptionist
               work 24/7 so you never miss a customer again.

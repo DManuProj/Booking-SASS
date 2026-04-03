@@ -31,16 +31,11 @@ const Navbar = () => {
   }, []);
 
   const isDark = mounted && theme === "dark";
-
   return (
     <header
       className={`
-        fixed top-0 left-0 right-0 z-50
-        transition-all duration-300
-       
-             " bg-[#070e1d]/85 backdrop-blur-2xl shadow-sm shadow-black/5 border-b border-brand-500/15 dark:border-brand-500/20"
-           
-        
+        fixed top-0 left-0 right-0 z-50 transition-all duration-300
+        ${"bg-background/50 backdrop-blur-2xl shadow-sm border-b border-border"}
       `}
     >
       <Container>
@@ -54,7 +49,7 @@ const Navbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium px-4 py-2 rounded-lg text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-500/8 transition-all duration-150"
+                className="text-sm font-medium px-4 py-2 rounded-lg text-foreground/70 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-500/8 transition-all duration-150"
               >
                 {link.label}
               </Link>
@@ -147,7 +142,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isMobileOpen && (
-        <div className="md:hidden border-t border-brand-100 dark:border-white/5 bg-white/95 dark:bg-[#070e1d]/95 backdrop-blur-2xl">
+        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl">
           <Container>
             <div className="py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
@@ -161,7 +156,7 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <div className="pt-3 mt-2 border-t border-brand-100 dark:border-white/5 flex flex-col gap-2">
+              <div className="pt-3 mt-2 border-t border-border flex flex-col gap-2">
                 {!isLoaded ? (
                   <div className="flex flex-col gap-2">
                     <div className="h-10 w-full rounded-lg bg-slate-200 dark:bg-slate-700 animate-pulse" />
