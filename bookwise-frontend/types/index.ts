@@ -226,3 +226,26 @@ export const bookingDetailsSchema = z.object({
 });
 
 export type BookingFormData = z.infer<typeof bookingDetailsSchema>;
+
+// ── Invitation ──────────────────────────────────────
+
+export type InviteStatus = "valid" | "expired" | "used" | "invalid";
+
+export type Invitation = {
+  token: string;
+  businessName: string;
+  businessLogo: string | null;
+  role: "ADMIN" | "MEMBER";
+  invitedBy: string;
+  expiresAt: Date;
+  status: InviteStatus;
+};
+
+// ── staffProfile setup ────────────────────────────────────
+
+export type ProfileSetupFormData = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  photo?: File | null;
+};
