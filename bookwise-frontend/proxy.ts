@@ -6,6 +6,7 @@ const isPublicRoute = createRouteMatcher([
   "/pricing",
   "/book(.*)",
   "/api/webhooks(.*)",
+  "/invite/(.*)", // invitation pages — token = security
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
